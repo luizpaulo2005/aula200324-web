@@ -1,0 +1,18 @@
+<h1>
+    Artigos
+</h1>
+<ul>
+    <% artigos.forEach(function (art) { %>
+        <dl>
+            <dt>
+                Título: <%= art.titulo%>
+            </dt>
+            <dd>
+                Descrição: <%= art.descricao%>
+            </dd>
+            <dd>
+                Total de páginas: <%= art.paginas%>
+            </dd>
+        </dl>
+        <% }); %>
+</ul>
