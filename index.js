@@ -12,50 +12,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.set("view engine", "ejs");
 
+const artigosRoutes = require("./routes/artigosRoutes");
+app.use("/artigos", artigosRoutes);
+
+app.listen(port, () => {
+  console.log(`Servidor escutando na porta ${port}`);
+});
+
 const aula = {
   disciplina: "Desenvolvimento Web",
   semestre: 6,
 };
 
-const artigos = [
-  { titulo: "Java", descricao: "Enterprise edition", paginas: 10 },
-  { titulo: "Python", descricao: "Machine learning", paginas: 5 },
-  { titulo: "Lua", descricao: "Jogos digitais", paginas: 3 },
-];
-artigos.push({ titulo: "C#", descricao: "Aprenda a programar", paginas: 8 });
-
 app.get("/", (req, res) => {
   res.render("index", { aula });
 });
 
-app.post("/", (req, res) => {
-  artigos.push({
-    titulo: req.body.titulo,
-    descricao: req.body.descricao,
-    paginas: parseInt(req.body.paginas),
-  });
-  console.log(artigos);
-  res.status(200).render("sucesso");
-});
-
-app.get("/artigos", (req, res) => {
-  res.render("artigos", { artigos });
-});
-
-app.get("/artigos/:numero", (req, res) => {
-  res.render("artigo", { artigo: artigos[req.params.numero] });
-});
+// Aula 10/03/24 - Atividade - Finalizar a implementação das rotas abaixo nos arquivos corretos:
 
 app.get("/artigosq", (req, res) => {
   console.log("Numero: " + req.query.numero);
   console.log("Titulo: " + req.query.titulo);
   //todo
-});
-
-// Aula 27-03-2024
-
-app.delete("/artigosDel/:id", (req, res) => {
-  res.status(404).end();
 });
 
 app.put("/artigos/:titulo", (req, res) => {
@@ -70,16 +48,3 @@ app.put("/artigos/:titulo", (req, res) => {
   }
 });
 
-app.delete("/artigos/:titulo", (req, res) => {
-  const index = artigos.findIndex((item) => item.titulo === req.params.titulo);
-  if (index === -1) {
-    res.status(404).send("Artigo não encontrado");
-  } else {
-    artigos.splice(index, 1);
-    res.status(200).send("Artigo deletado com sucesso");
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Servidor escutando na porta ${port}`);
-});
